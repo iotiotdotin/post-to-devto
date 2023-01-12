@@ -32,6 +32,6 @@ jobs:
           # Your dev.to personal API key to publish and update articles
           devto_key: ${{ secrets.DEVTO_ACCESS_TOKEN }}
           # Your GitHub access token to update files with ID once published
-          github_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          github_token: ${{ secrets.GTHUB_ACCESS_TOKEN }}
           # One or more glob patterns of files to include
           files: ${{ steps.posts.outputs.post0 }}
