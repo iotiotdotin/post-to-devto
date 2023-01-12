@@ -1,1 +1,35 @@
+name: Post to dev.to site
+on: [push]
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+      - id: posts
+        name: Detecting posts from the changes
+        run: |
+          i=0
+          for changed_file in ${{ steps.files.outputs.added_modified }}; do
+            echo "Do something with ${changed_file}."
+            if [[ "${changed_file}" == *.md ]];
+            then
+              echo "File ${changed_file} matched post."
+              echo "::set-output name=post${i}::${changed_file}"
+              ((i=i+1))
+            fi
+          done
+      - id: checkout
+        name: Checkout the repository
+        uses: actions/checkout@v2
+      - if: steps.posts.outputs.post0
+        name: devto-act
+        # You may pin to the exact commit or the version.
+        # uses: shihanng/devto-act@4fea9ac045f84831a37234be3097799e674a0665
+        uses: shihanng/devto-act@v0.0.6
+        with:
+          # API key for authentication
+          devto_api_key: ${{ secrets.DEVTO_ACCESS_TOKEN }}
+          # Path to markdown files (space separated) to be submitted
+          markdown_files: ${{ steps.posts.outputs.post0 }}
