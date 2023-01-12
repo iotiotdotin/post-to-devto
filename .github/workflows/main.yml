@@ -24,12 +24,14 @@ jobs:
         name: Checkout the repository
         uses: actions/checkout@v2
       - if: steps.posts.outputs.post0
-        name: devto-act
-        # You may pin to the exact commit or the version.
-        # uses: shihanng/devto-act@4fea9ac045f84831a37234be3097799e674a0665
-        uses: shihanng/devto-act@v0.0.6
+        name: Publish to dev.to
+          # You may pin to the exact commit or the version.
+          # uses: sinedied/publish-devto@30728bf375a0d24f91e18ae83ecdd219e5ac1878
+        uses: sinedied/publish-devto@v1
         with:
-          # API key for authentication
-          devto_api_key: ${{ secrets.DEVTO_ACCESS_TOKEN }}
-          # Path to markdown files (space separated) to be submitted
-          markdown_files: ${{ steps.posts.outputs.post0 }}
+          # Your dev.to personal API key to publish and update articles
+          devto_key: ${{ secrets.DEVTO_ACCESS_TOKEN }}
+          # Your GitHub access token to update files with ID once published
+          github_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          # One or more glob patterns of files to include
+          files: ${{ steps.posts.outputs.post0 }}
